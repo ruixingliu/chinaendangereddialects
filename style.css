@@ -1,0 +1,84 @@
+/* style.css */
+
+/* 引入Google字体：Open Sans。若不需网络字体，可删除这段。 */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* 使用Open Sans字体 */
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
+  background-color: #f7f7f7;
+}
+
+/* 顶部区域整体 */
+header {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;    /* 适度增大上下内间距 */
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);  /* 轻微阴影，使header浮起一点 */
+}
+
+/* 第一行：左侧中英文标题 + 右侧语言切换 */
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 站点标题：含中文 / 英文 */
+.site-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;    /* 稍微加大字体 */
+  font-weight: 600;       /* 半粗字体 */
+  color: #2e2e2e;
+}
+.site-title .divider {
+  margin: 0 12px;
+  color: #ccc;
+}
+
+/* 语言切换 */
+.language-switch a {
+  margin-left: 16px;       /* 间距增大一些 */
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.language-switch a:hover {
+  color: #007acc;          /* 悬停变为蓝色 */
+}
+
+/* 第二行：导航菜单 */
+.navbar {
+  margin-top: 16px;         /* 增加顶部间距，让两行分得更开 */
+  display: flex;
+  align-items: center;
+}
+
+.navbar a {
+  margin-right: 24px;       /* 导航链接间距 */
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: #007acc;
+}
+
+/* 主体内容区 */
+main {
+  max-width: 800px;         /* 限制宽度，使内容居中显得更美观 */
+  margin: 40px auto;
+  padding: 0 16
