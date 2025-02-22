@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>联系 / Contact - 千言千寻</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>联系 / Contact</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html">主页 / Home</a></li>
+        <li><a href="xunyan.html">寻言 / Dialect Map</a></li>
+        <li><a href="contact.html">联系 / Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <!-- 引导语：欢迎访客通过表单或直接联系 -->
+    <section class="bilingual">
+        <p>如果您有任何问题、建议或合作意向，欢迎通过以下方式与我联系：</p>
+        <p>If you have any questions, suggestions, or collaboration inquiries, feel free to reach out via the form below or direct contact information provided:</p>
+    </section>
+
+    <!-- 联系表单，提交时使用 mailto:你的邮箱 -->
+    <form action="mailto:rxl546@sas.upenn.edu" method="post" enctype="text/plain">
+        <label for="name">姓名 / Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">电子邮件 / Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="message">留言 / Message:</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        
+        <button type="submit" class="button">发送 / Send</button>
+    </form>
+
+    <!-- 创始人介绍及联系方式 -->
+    <section class="bilingual" style="margin-top: 30px;">
+        <p><strong>项目创始人 / Project Founder:</strong> 刘瑞行（Ruixing Liu）</p>
+        <p><strong>邮箱 / Email:</strong> rxl546@sas.upenn.edu</p>
+        <p><strong>电话 / Phone:</strong> +1 5107039340 / +86 18510566852</p>
+    </section>
+
+    <!-- 网站介绍，可保留或调整 -->
+    <section class="bilingual" style="margin-top: 30px;">
+        <p>关于本站 / About This Site:</p>
+        <p>千言千寻是一个致力于记录和保护中国濒危汉语方言的项目，旨在为后世留下宝贵的语言文化遗产。</p>
+        <p>Dialects@Chinese is a project dedicated to documenting and preserving endangered Chinese dialects, aiming to leave a valuable linguistic and cultural heritage for future generations.</p>
+    </section>
+</div>
+<footer>
+    <p>千言千寻 © 2025</p>
+    <p>Dialects@Chinese © 2025</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>寻言 / Dialect Map - 千言千寻</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>寻言 / Dialect Map</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="index.html">主页 / Home</a></li>
+        <li><a href="xunyan.html">寻言 / Dialect Map</a></li>
+        <li><a href="contact.html">联系 / Contact</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <!-- 布局容器：左侧地图 + 右侧按钮 -->
+    <div class="map-page-container">
+        <!-- 左侧地图区域 -->
+        <div class="map-container">
+            <!-- 你需要在项目目录下放一张名为 china-map.png 的图片 -->
+            <img src="china-map.png" alt="中国地图 / China Map">
+        </div>
+        
+        <!-- 右侧按钮栏 -->
+        <div class="sidebar">
+            <div class="region-buttons">
+                <button class="button" onclick="location.href='northeast.html'">
+                    东北地区<br>Northeast Region
+                </button>
+                <button class="button" onclick="location.href='huabei.html'">
+                    华北地区<br>North China
+                </button>
+                <button class="button" onclick="location.href='xibei.html'">
+                    西北地区<br>Northwest Region
+                </button>
+                <button class="button" onclick="location.href='xinan.html'">
+                    西南地区<br>Southwest Region
+                </button>
+                <button class="button" onclick="location.href='zhongnan.html'">
+                    中南地区<br>Central South
+                </button>
+                <button class="button" onclick="location.href='huadong.html'">
+                    华东地区<br>East China
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section class="bilingual">
+        <p>点击右侧按钮选择区域，查看该区域濒危汉语方言的信息。</p>
+        <p>Click the buttons on the right to select a region and view information on endangered Chinese dialects in that area.</p>
+    </section>
+</div>
+
+<footer>
+    <p>千言千寻 © 2025</p>
+    <p>Dialects@Chinese © 2025</p>
+</footer>
+</body>
+</html>

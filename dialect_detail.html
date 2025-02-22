@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>方言详情 / Dialect Detail - 千言千寻</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      // 1. 定义所有方言的详细数据 (key => data)
+      //    这些 key 要与 ?dialect=xxx 里的 xxx 对应
+      const dialectData = {
+        harbin: {
+          displayName: "哈尔滨农村方言 / Harbin Rural Dialect",
+          location: "黑龙江哈尔滨周边农村 / Rural areas around Harbin, Heilongjiang",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "保留东北官话老形式，音调平缓，卷舌音明显 / Retains older form of Northeast Mandarin...",
+          lexical: "农业词汇丰富 (如“地瓜”) / Rich agricultural vocab (e.g. sweet potato)"
+        },
+        jilin: {
+          displayName: "吉林山地方言 / Jilin Mountain Dialect",
+          location: "吉林省山区 / Mountainous areas in Jilin Province",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "受当地民族语言影响，音调独特 / Influenced by local ethnic languages, unique tones",
+          lexical: "山区生活词汇 (如“山货”) / Mountain-related vocab"
+        },
+        liaoning: {
+          displayName: "辽宁沿海方言 / Liaoning Coastal Dialect",
+          location: "辽宁沿海渔村 / Fishing villages along Liaoning coast",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "航海词汇多，辅音独特 / Rich nautical terms, unique consonants",
+          lexical: "渔业词汇 (如“渔汛”) / Fishing-related vocab"
+        },
+        heihe: {
+          displayName: "黑河方言 / Heihe Dialect",
+          location: "黑龙江黑河市 / Heihe, Heilongjiang",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "官话特征明显，音调单一 / Prominent Mandarin traits, monotone intonation",
+          lexical: "边境贸易词汇 (如“对岸”) / Border-trade vocab"
+        },
+        changbai: {
+          displayName: "长白山方言 / Changbai Mountain Dialect",
+          location: "吉林长白山 / Changbai Mountain, Jilin",
+          endangerment: "严重濒危 / Critically endangered",
+          phonetic: "受朝鲜语和满语影响，音系混杂 / Korean & Manchu influence, mixed system",
+          lexical: "山林狩猎词汇 (如“人参”) / Forest-hunting vocab"
+        },
+
+        // 华北地区
+        jidong: {
+          displayName: "冀东偏远方言 / Remote Eastern Hebei Dialect",
+          location: "河北东部 / Eastern Hebei",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "卷舌音突出，冀鲁官话特征 / Prominent retroflex, Hebei–Shandong traits",
+          lexical: "农业词汇 (如“地瓜”) / Agricultural vocab"
+        },
+        shanxi: {
+          displayName: "山西偏远村庄方言 / Remote Shanxi Village Dialect",
+          location: "山西多地 / Various parts of Shanxi",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "晋语特征，音调复杂 / Jin dialect traits, complex tones",
+          lexical: "煤炭词汇 (如“煤窑”) / Coal-related vocab"
+        },
+        neimenggu: {
+          displayName: "内蒙古偏远方言 / Remote Inner Mongolia Dialect",
+          location: "内蒙古东部 / Eastern Inner Mongolia",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "辅音丰富，音系多样 / Rich consonants, diverse system",
+          lexical: "游牧词汇 (如“牧草”) / Nomadic vocab"
+        },
+        beijing: {
+          displayName: "京郊村庄方言 / Beijing Suburban Village Dialect",
+          location: "北京郊区 / Suburban Beijing",
+          endangerment: "严重濒危 / Critically endangered",
+          phonetic: "官话特征，轻声明显 / Mandarin-based, noticeable light tones",
+          lexical: "农耕市井词汇 (如“胡同”) / Alleyway terms"
+        },
+        tianjin: {
+          displayName: "天津偏远方言 / Remote Tianjin Dialect",
+          location: "天津郊区 / Tianjin suburbs",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音调平缓，辅音清晰 / Smooth tones, clear consonants",
+          lexical: "港口词汇 (如“码头”) / Port-related vocab"
+        },
+        luxibei: {
+          displayName: "鲁西北方言 / Northwestern Shandong Dialect",
+          location: "山东西部 / Western Shandong",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "卷舌音突出，声调较少 / Prominent retroflex, fewer tones",
+          lexical: "农业渔业词汇 (如“黄河”) / Agriculture & fishing vocab"
+        },
+
+        // 西北地区
+        gansu: {
+          displayName: "甘肃丝绸之路方言 / Gansu Silk Road Dialect",
+          location: "甘肃古丝绸之路城镇 / Towns along Silk Road, Gansu",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "保留古汉语元素，受中亚语言影响 / Retains archaic Chinese, Central Asian influences",
+          lexical: "贸易相关词汇 (如“驼队”) / Trade terms (e.g. 'camel caravan')"
+        },
+        qinghai: {
+          displayName: "青海高原方言 / Qinghai Plateau Dialect",
+          location: "青海高原 / Qinghai Plateau",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "高原环境影响，受藏语影响 / Plateau environment, Tibetan influence",
+          lexical: "游牧词汇 (如“牦牛”) / Nomadic vocab"
+        },
+        ningxia: {
+          displayName: "宁夏回族方言 / Ningxia Hui Dialect",
+          location: "宁夏回族地区 / Ningxia Hui region",
+          endangerment: "濒危低 / Low risk",
+          phonetic: "音系混杂，辅音丰富 / Mixed system, rich consonants",
+          lexical: "饮食词汇 (如“羊肉”) / Culinary vocab"
+        },
+        shaanxi: {
+          displayName: "陕北偏远方言 / Remote Northern Shaanxi Dialect",
+          location: "陕西北部 / Northern Shaanxi",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "音调高亢，晋语特征 / High-pitched, Jin dialect traits",
+          lexical: "黄土高原词汇 (如“窑洞”) / Loess Plateau terms"
+        },
+        lanzhou: {
+          displayName: "兰州郊区方言 / Lanzhou Suburban Dialect",
+          location: "甘肃兰州郊区 / Suburbs of Lanzhou, Gansu",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音调平缓，官话特征 / Gentle tones, Mandarin-based",
+          lexical: "面食词汇 (如“拉面”) / Noodle-related vocab"
+        },
+        xinjiang: {
+          displayName: "新疆偏远村庄方言 / Remote Xinjiang Village Dialect",
+          location: "新疆南部 / Southern Xinjiang",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "辅音丰富，音系复杂 / Rich consonants, complex system",
+          lexical: "丝绸之路词汇 (如“巴扎”) / Silk Road terms (e.g. 'bazaar')"
+        },
+
+        // 西南地区
+        yunnan: {
+          displayName: "云南茶山方言 / Yunnan Tea Mountain Dialect",
+          location: "云南茶区 / Tea-growing regions in Yunnan",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音调复杂，可能受闽语影响 / Complex tones, possible Minnan influence",
+          lexical: "茶业词汇 (如“普洱”) / Tea-related vocab (Pu’er)"
+        },
+        guizhou: {
+          displayName: "贵州苗族影响方言 / Guizhou Miao-Influenced Dialect",
+          location: "贵州苗族地区 / Miao regions in Guizhou",
+          endangerment: "濒危高 / Highly endangered",
+          phonetic: "音系混杂，受苗语影响 / Mixed system, Miao influence",
+          lexical: "苗族文化词汇 (如“鼓楼”) / Miao cultural terms"
+        },
+        sichuan: {
+          displayName: "四川藏区边境方言 / Sichuan Tibetan Border Dialect",
+          location: "四川藏区村庄 / Tibetan areas of Sichuan",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音系独特，受藏语影响 / Unique system, Tibetan influence",
+          lexical: "牧业词汇 (如“酥油”) / Pastoral terms (butter, etc.)"
+        },
+        chongqing: {
+          displayName: "重庆偏远方言 / Remote Chongqing Dialect",
+          location: "重庆郊区 / Suburban Chongqing",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音调高亢，儿化音少 / High-pitched, minimal 'er-hua'",
+          lexical: "火锅词汇 (如“辣子”) / Hotpot terms (spicy pepper, etc.)"
+        },
+        tibetansoutheast: {
+          displayName: "藏东南方言 / Tibetan Southeast Dialect",
+          location: "西藏东南部 / Southeastern Tibet",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音调多样，藏语影响 / Diverse tones, Tibetan influence",
+          lexical: "牧业词汇 (如“牦牛”) / Pastoral vocab (yak, etc.)"
+        },
+        yunnanxinan: {
+          displayName: "滇西北方言 / Northwestern Yunnan Dialect",
+          location: "云南西北部 / Northwestern Yunnan",
+          endangerment: "濒危中 / Moderately endangered",
+          phonetic: "音系独特，受彝语影响 / Unique system, Yi language influence",
+          lexical: "山区贸易词汇 (如“马帮”) / Mountain trade terms (caravan, etc.)"
+        },
+
+        // 中南地区
+        waxiang: {
+          displayName: "瓦乡话 / Wa Xiang Dialect",
+          location: "湖南西北部 / Northwestern Hunan",
+          endangerment: "极度濒危 / Critically endangered",
+          phonetic: "音调独特，客家或赣语相关 / Unique tones, possibly Hakka/Gan relation",
+          lexical: "村庄生活词汇 (如“田埂”) / Village-life terms"
+        },
+        danzhou: {
+          displayName: "儋州话 / Danzhou Dialect",
+          location: "海南儋州市 / Danzhou, Hainan",
+          endangerment: "子方言濒危 / Endangered sub-dialect (~400k speakers)",
+          phonetic: "可能与粤语或闽语相关 / Possibly Cantonese/Minnan",
+          lexical: "历史移民词汇 (如“渔船”) / Migrant vocab"
+        },
+        mai: {
+          displayName: "迈方言 / Mai Dialect",
+          location: "海南三亚 / Sanya, Hainan",
+          endangerment: "严重濒危 / Critically endangered (~10k speakers)",
+          phonetic: "可能与粤语相关，音调多样 / Possibly Cantonese, diverse tones",
+          lexical: "粤语客家混合 (如“海口”) / Mixed Cantonese/Hakka"
+        },
+        dapeng: {
+          displayName: "大鹏方言 / Dapeng Dialect",
+          location: "广东深圳大鹏新区 / Dapeng, Shenzhen",
+          endangerment: "濒危，数千使用者 / Endangered, a few thousand speakers",
+          phonetic: "客家粤语混合，音调复杂 / Mixed Hakka/Cantonese, complex tones",
+          lexical: "渔业围屋词汇 (如“海蛎”) / Fishing/walled-village vocab"
+        },
+        shaozhou: {
+          displayName: "韶州土话 / Shaozhou Vernacular",
+          location: "广东北部韶关 / Shaoguan, Guangdong",
+          endangerment: "濒危 / Endangered, unclassified",
+          phonetic: "平话客家粤语混合 / Mixed Ping/Hakka/Cantonese",
+          lexical: "历史融合词汇 (如“山歌”) / Historically fused terms"
+        },
+        xiangxi: {
+          displayName: "湘西偏远方言 / Remote Western Hunan Dialect",
+          location: "湖南湘西 / Western Hunan",
+          endangerment: "濒危 / Endangered",
+          phonetic: "音调高亢，湘语特征 / High tones, Xiang dialect traits",
+          lexical: "苗族文化词汇 (如“鼓楼”) / Miao cultural terms"
+        },
+        guangxi: {
+          displayName: "广西偏远方言 / Remote Guangxi Dialect",
+          location: "广西北部 / Northern Guangxi",
+          endangerment: "濒危 / Endangered",
+          phonetic: "音系混杂，平话特征 / Mixed system, Pinghua traits",
+          lexical: "壮族文化词汇 (如“糯米”) / Zhuang cultural vocab"
+        },
+
+        // 华东地区
+        she: {
+          displayName: "畲话 / She Dialect",
+          location: "福建、浙江、广东 / Fujian, Zhejiang, Guangdong",
+          endangerment: "子方言濒危 (~70万使用者) / Endangered sub-dialect (~700k speakers)",
+          phonetic: "可能与客家相关，音系多方影响 / Possibly Hakka-related, multiple influences",
+          lexical: "畲族文化词汇 (如“山歌”) / She culture terms"
+        },
+        longdu: {
+          displayName: "龙都方言 / Longdu Dialect",
+          location: "福建龙岩 / Longyan, Fujian",
+          endangerment: "子方言濒危 / Endangered sub-dialect",
+          phonetic: "典型闽语发音，音调多样 / Typical Minnan, multiple tones",
+          lexical: "客家闽语混合 (如“土楼”) / Mixed Hakka/Minnan (tulou, etc.)"
+        },
+        xiapu: {
+          displayName: "霞浦方言 / Xiapu Dialect",
+          location: "福建霞浦 / Xiapu, Fujian",
+          endangerment: "子方言濒危，民间记录少 / Endangered sub-dialect, scant records",
+          phonetic: "闽语发音，音系独特 / Minnan-based, unique system",
+          lexical: "渔业词汇 (如“渔网”) / Fishing terms"
+        },
+        ningde: {
+          displayName: "宁德方言 / Ningde Dialect",
+          location: "福建宁德 / Ningde, Fujian",
+          endangerment: "子方言濒危，保护少 / Endangered sub-dialect, limited protection",
+          phonetic: "音调系统复杂，闽语特征 / Complex tones, Minnan traits",
+          lexical: "传统词汇 (如“竹篱”) / Traditional vocab"
+        },
+        zhangpu: {
+          displayName: "漳浦方言 / Zhangpu Dialect",
+          location: "福建漳浦 / Zhangpu, Fujian",
+          endangerment: "子方言濒危 / Endangered sub-dialect",
+          phonetic: "闽语发音，音系多样 / Minnan-based, diverse system",
+          lexical: "农业渔业词汇 (如“稻田”) / Farming/fishing terms"
+        },
+        chaoan: {
+          displayName: "潮安方言 / Chao'an Dialect",
+          location: "广东潮州 / Chaozhou, Guangdong",
+          endangerment: "子方言濒危，保护少 / Endangered sub-dialect, minimal protection",
+          phonetic: "潮州发音，音调丰富 / Chaozhou-based, rich tones",
+          lexical: "贸易饮食词汇 (如“海鲜”) / Trade/food terms"
+        },
+        zhejiang: {
+          displayName: "浙江山地方言 / Zhejiang Mountain Dialect",
+          location: "浙江山区 / Mountainous Zhejiang",
+          endangerment: "濒危，保护少 / Endangered, minimal protection",
+          phonetic: "音系复杂，受吴语影响 / Complex system, Wu influence",
+          lexical: "山区生活词汇 (如“山泉”) / Mountain life terms"
+        }
+      };
+
+      window.onload = function() {
+          // 2. 读取 URL 查询参数
+          const params = new URLSearchParams(window.location.search);
+          // 3. 获取名为 'dialect' 的值，如无则 'unknown'
+          const dialectKey = params.get('dialect') || 'unknown';
+          
+          // 4. 找到对应的数据
+          const data = dialectData[dialectKey];
+          
+          // 5. 如果能找到，填入页面；否则给个默认提示
+          if (data) {
+            document.getElementById('dialect-name').innerText = data.displayName;
+            document.getElementById('dialect-location').innerText = data.location;
+            document.getElementById('dialect-endangerment').innerText = data.endangerment;
+            document.getElementById('dialect-phonetic').innerText = data.phonetic;
+            document.getElementById('dialect-lexical').innerText = data.lexical;
+          } else {
+            // 未知方言
+            document.getElementById('dialect-name').innerText = "未知方言 / Unknown dialect";
+            document.getElementById('dialect-location').innerText = "无记录 / No record";
+            document.getElementById('dialect-endangerment').innerText = "--";
+            document.getElementById('dialect-phonetic').innerText = "--";
+            document.getElementById('dialect-lexical').innerText = "--";
+          }
+      };
+    </script>
+</head>
+<body>
+<header>
+    <h1>方言详情 / Dialect Detail</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="index.html">主页 / Home</a></li>
+        <li><a href="xunyan.html">寻言 / Dialect Map</a></li>
+        <li><a href="contact.html">联系 / Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <section class="bilingual">
+        <h2 id="dialect-name">[Dialect Name]</h2>
+        <p><strong>所处位置 / Location:</strong> 
+           <span id="dialect-location">尚未加载</span>
+        </p>
+        <p><strong>濒危程度与保护现状 / Endangerment &amp; Protection:</strong> 
+           <span id="dialect-endangerment">尚未加载</span>
+        </p>
+        <p><strong>发音特征 / Phonetic Features:</strong> 
+           <span id="dialect-phonetic">尚未加载</span>
+        </p>
+        <p><strong>词汇特征 / Lexical Features:</strong> 
+           <span id="dialect-lexical">尚未加载</span>
+        </p>
+    </section>
+    <p>
+      <a href="javascript:history.back()" class="button">返回 / Back</a>
+    </p>
+</div>
+<footer>
+    <p>千言千寻 © 2025</p>
+    <p>Dialects@Chinese © 2025</p>
+</footer>
+</body>
+</html>
